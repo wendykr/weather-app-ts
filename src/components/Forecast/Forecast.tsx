@@ -9,7 +9,7 @@ interface ForecastDataStructure {
   };
   weather: {
     icon: string;
-  };
+  }[];
 }
 
 interface ForecastProps {
@@ -47,7 +47,7 @@ export const Forecast:React.FC<ForecastProps> = ({ city }) => {
               <div className="forecast__day">{getDayfromUnix(item.dt)}</div>
               <div className="forecast__icon">
                 <img
-                  src={`http://openweathermap.org/img/wn/${item.weather.icon}@2x.png`}
+                  src={`http://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
                   style={{ height: "100%" }}
                   alt="current weather icon"
                 />

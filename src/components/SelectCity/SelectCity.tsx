@@ -1,16 +1,33 @@
 import './SelectCity.css';
+import { cities } from '../../utils/cities';
 
 interface SelectCityProps {
-  handleButtonClick: (city: string) => void;
+  handleSelect: (city: string) => void;
+  city: string;
 }
 
-export const SelectCity:React.FC<SelectCityProps> = ({ handleButtonClick }) => {
+export const SelectCity: React.FC<SelectCityProps> = ({ handleSelect, city }) => {
+
+  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedCity = event.target.value;
+    handleSelect(selectedCity);
+  };
 
   return (
-    <div className="button-group">
-      <button className="button" onClick={() => handleButtonClick('Prague')}>Prague</button>
-      <button className="button" onClick={() => handleButtonClick('Reykjavik')}>Reykjavik</button>
-      <button className="button" onClick={() => handleButtonClick('Tenerife')}>Tenerife</button>
+    <div className="select-wrapper">
+      <select
+        className="select"
+        name="cityselect"
+        id="cityselect"
+        value={city}
+        onChange={handleChange}
+      >
+        {cities.map((city, index) => (
+          <option key={index} value={city}>
+            {city}
+          </option>
+        ))}
+      </select>
     </div>
-  )
-}
+  );
+};

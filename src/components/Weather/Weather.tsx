@@ -3,6 +3,11 @@ import './Weather.css';
 import { WeatherCurrent } from "../WeatherCurrent/WeatherCurrent";
 import { Forecast } from '../Forecast/Forecast';
 
+interface Weather {
+  main: string;
+  icon: string;
+}
+
 export interface WeatherDataStructure {
   weather: {
     main: string;
