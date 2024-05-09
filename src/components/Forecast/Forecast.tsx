@@ -2,19 +2,14 @@ import { useState, useEffect} from 'react';
 import './Forecast.css';
 import { getDayfromUnix } from '../../helpers/helpers';
 
-interface WeatherDataStructure {
-  city: {
-    name: string;
+interface ForecastDataStructure {
+  dt: number;
+  main: {
+    temp: number;
   };
-  list: {
-    dt: number;
-    main: {
-      temp: number;
-    };
-    weather: {
-      icon: string;
-    }[];
-  }[];
+  weather: {
+    icon: string;
+  };
 }
 
 interface ForecastProps {
@@ -22,7 +17,7 @@ interface ForecastProps {
 }
 
 export const Forecast:React.FC<ForecastProps> = ({ city }) => {
-  const [forecast, setForecast] = useState<WeatherDataStructure['list'] | null>(null);
+  const [forecast, setForecast] = useState<ForecastDataStructure[] | null>(null);
   const apiId = import.meta.env.VITE_MY_API_ID;
 
   useEffect(() => {
@@ -32,9 +27,9 @@ export const Forecast:React.FC<ForecastProps> = ({ city }) => {
           if (!response.ok) {
               throw new Error('Failed to fetch weather data');
           }
-          const data: WeatherDataStructure = await response.json();
+          const data = await response.json();
 
-          const filteredForecast = data.list.filter((_, index: number) => index % 8 === 0);
+          const filteredForecast: ForecastDataStructure[] = data.list.filter((_:ForecastDataStructure, index: number) => index % 8 === 0);
           setForecast(filteredForecast);
       } catch (error) {
           console.error('Error fetching weather data:', error);
@@ -52,7 +47,7 @@ export const Forecast:React.FC<ForecastProps> = ({ city }) => {
               <div className="forecast__day">{getDayfromUnix(item.dt)}</div>
               <div className="forecast__icon">
                 <img
-                  src={`http://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
+                  src={`http://openweathermap.org/img/wn/${item.weather.icon}@2x.png`}
                   style={{ height: "100%" }}
                   alt="current weather icon"
                 />

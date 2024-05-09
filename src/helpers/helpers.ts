@@ -1,6 +1,3 @@
-import { days } from '../utils/days'
-import { months } from '../utils/months'
-
 export const getTimefromUnix = (unix: number): string => {
   const date = new Date(unix * 1000);
   const hours: number = date.getHours();
@@ -11,5 +8,12 @@ export const getTimefromUnix = (unix: number): string => {
 
 export const getDayfromUnix = (unix: number): string => {
   const date = new Date(unix * 1000);
-  return `${days[date.getDay()]}, ${months[date.getMonth()]} ${date.getDate()} `;
+
+  const localDate = new Date(date.toLocaleString('en-US', { timeZone: 'Europe/Prague' }));
+
+  const dayOfWeek = localDate.toLocaleString('en-US', { weekday: 'long' });
+  const dayOfMonth = localDate.getDate();
+  const month = localDate.toLocaleString('en-US', { month: 'long' });
+
+  return `${dayOfWeek}, ${month} ${dayOfMonth}`;
 };
